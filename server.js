@@ -2,6 +2,7 @@
 const express = require('express');
 const routerCart = require ('./routes/cart/index');
 const routerProducts = require ('./routes/products/index');
+
 //instancias
 const app = express();
 
@@ -17,7 +18,9 @@ app.use ('/api/products',  routerProducts);
 //rutas
 
 
-app.use('/api', routerProducts);
+app.get('/api', (req, res) => {
+    res.send('Bienvenido a mi servidor');
+});
 
 
 
