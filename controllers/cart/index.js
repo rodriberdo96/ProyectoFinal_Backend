@@ -3,11 +3,11 @@ const { ConsoleMessage } = require('puppeteer');
 
 class Cart {
     constructor() {
-        this.db = './cart.txt';
+        this.route = './cart.json';
     }
     async addToCart(req,res) {
         try {
-            const cartRoute = JSON.parse(await fs.readFile('./cart.txt','utf-8'))
+            const cartRoute = JSON.parse(await fs.readFile(this.route ,'utf-8'))
             const elementosFiltrados = cartRoute.filter(e => e.id === (parseInt(idCarrito))) 
             const content = JSON.parse(await fs.readFile('./products.json','utf-8'))
             const ProductoFiltrados = content.find(e => e.id === (parseInt(id))) 
@@ -30,7 +30,7 @@ class Cart {
 
     async newCart() {
         try {
-            const cartRoute = await fs.readFileSync("./cart.txt", 'utf-8');
+            const cartRoute = await fs.readFileSync(this.route, 'utf-8');
             let newId;
             if (cartRoute.length === 0) {
                 newId = 1;
@@ -51,7 +51,7 @@ class Cart {
     }
     getProductsCartByID(idCarrito) {
         try {
-            const cartRoute = fs.readFileSync("./cart.txt", 'utf-8');
+            const cartRoute = fs.readFileSync(this.route, 'utf-8');
             const elementosFiltrados = cartRoute.filter(elemento => elemento.id === parseInt(idCarrito));
             console.log(elementosFiltrados);
             if (elementosFiltrados.length === 0) {
@@ -67,12 +67,12 @@ class Cart {
     }
     deleteCartByID(id) {
         try {
-            const cartRoute = fs.readFileSync("./cart.txt", 'utf-8');
+            const cartRoute = fs.readFileSync(this.route, 'utf-8');
             const elementosFiltrados = cartRoute.filter(elemento => elemento.id !== parseInt(id));
             if (elementosFiltrados.length === 0) {
                 res.status(404).send("No se encontro el producto");
             } else {
-                fs.writeFileSync("./cart.txt", JSON.stringify(elementosFiltrados));
+                fs.writeFileSync(this.route, JSON.stringify(elementosFiltrados));
                 res.status(200).send("El producto fue eliminado con exito");
             }
         } catch (error) {
@@ -81,9 +81,9 @@ class Cart {
     }
     async deleteProductCartByID(idCarrito,id) {
         try {
-            const cartRoute = fs.readFileSync("./cart.txt", 'utf-8');
+            const cartRoute = fs.readFileSync(this.route, 'utf-8');
             const elementosFiltrados = cartRoute.filter(elemento => elemento.id !== (parseInt(idCarrito)));
-            const  content = fs.readFileSync("./products.txt", 'utf-8');
+            const  content = fs.readFileSync("./products.json", 'utf-8');
             const productsFiltrados = content.filter(elemento => elemento.id !== id);
             if (elementosFiltrados.length === 0) {
                 res.status(404).send("No se encontro el carrito");
@@ -96,7 +96,7 @@ class Cart {
                         res.status(404).send("No se encontro el producto");
                     } else {
                         cartProducts.productos.splice(indexProduct, 1);
-                        await fs.writeFileSync("./cart.txt", JSON.stringify(cartRoute));
+                        await fs.writeFileSync(this.route, JSON.stringify(cartRoute));
                         return elementosFiltrados
                     }
                 }

@@ -12,6 +12,7 @@ routerCart.get('/:idCarrito/products', (req, res) => {
     res.send(products);
 });
 
+
 routerCart.post('/', cartController.addToCart);
 routerCart.post('/:idCarrito/products/:id', (req, res) => {
     const {idCarrito,id} = req.params;
