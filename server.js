@@ -2,7 +2,7 @@
 const express = require('express');
 const routerCart = require ('./routes/cart/index');
 const routerProducts = require ('./routes/products/index');
-
+const db = require ('./firebase/firebase');
 //instancias
 const app = express();
 
