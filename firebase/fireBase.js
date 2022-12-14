@@ -12,28 +12,25 @@ admin.initializeApp({
 console.log('Firebase conectado');
 
 const db = admin.firestore();
-const products= db.collection('products');
-const messages= db.collection('messages');
 
-await products.doc().set({
-    title: 'Tijera',
-    price: 80,
-    thumbnail: 'https://www.google.com.ar',
-    description: 'Tijera de 10 cm',
-    stock: 10,
-    code: '123456',
-    timestamp: Date.now(),
-    category: 'tijera'
+const ecommerce = db.collection('ecommerce')
+await ecommerce.doc().set({products});
+console.log('base firebase conectada');
 
-});
+class Products {
+    
+    async getAll() {
+        try {
+            const snapshot = await ecommerce.get();
+            snapshot.forEach(doc => {
+            console.log(doc.id, '=>', doc.data());
+        })
+            return snapshot //en la consola me lo trae pero en thunder medio raro el objeto.
+        } catch (error) {
+            return []
+        }
+    }
+}
 
-await messages.doc().set({
-    email: 'rodriberdomas@gmail.com',
-    message: 'Hola, quiero comprar un producto',
-    timestamp: Date.now(),
-    name: 'Rodrigo',
-    phone: '1122334455'
-});
-
-console.log('Productos y mensajes cargados');
-module.exports = db;
+const productControllerFB = new Products();
+module.exports = productControllerFB;

@@ -1,6 +1,7 @@
 //importaciones
 const {Router} = require('express');
 const productController = require ('../../controllers/products/index.js');
+const productControllerFB = require ('../../firebase/fireBase.js');
 const admin = require ('../../admin.js');
 //instancias
 const routerProducts =  new Router();
@@ -14,8 +15,8 @@ routerProducts.get('/', (req, res) => {
 
 routerProducts.get('/:id',async (req,res,next) => {
     const { id } = req.params
-    const products = await productController.getById(id)
-    res.send(products)
+    const productsFB = await productControllerFB.getById(id)
+    res.send(productsFB)
 })
 routerProducts.post('/',admin, (req,res) => productController.save);
 
