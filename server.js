@@ -1,32 +1,38 @@
-//importaciones
-const express = require('express');
-const routerCart = require ('./routes/cart/index');
-const routerProducts = require ('./routes/products/index');
-const db = require ('./firebase/firebase');
-//instancias
-const app = express();
+const app = require('./index')
+const express = require('express')
+require('dotenv').config()
+const minimist = require('minimist')
 
-//configuraciones
-const port = 8080;
+const args = minimist(process.argv.slice(2))
+const PORT =  args.port || process.env.PORT || 8080
 
-//middlewares
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use ('/api/cart',  routerCart);
-app.use ('/api/products',  routerProducts);
+const cluster = express('cluster') 
+const os = require('os')
 
-//rutas
+const numCPUs = os.cpus().length
 
+const modoServer = args.modo || 'Fork'
 
-app.get('/api', (req, res) => {
-    res.send('Bienvenido a mi servidor');
-});
-
-
-
-//Servidor
-const server = app.listen(port, () => {
-    console.log(`Server is running on port: http://localhost:${port}`);
-    });
-
-server.on ('error', error => console.log(`Server is not running due to: ${error}`));
+if (modoServer == 'CLUSTER') {
+    if (cluster.isPrimary) {
+        console.log(`Master ${process.pid} id running`)
+    
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork()  
+        }
+        cluster.on('exit', (worker, code, signal) => {
+            console.log(`worker ${worker.process.pid} died`)
+        })
+    } else {
+        app
+        .listen(PORT, () => console.log(`http://localhost:${PORT}/`))
+        .on('error', err => console.log(err))
+        console.log(`Worker ${process.pid} started`)
+    }
+} else {
+    app
+    .listen(PORT, () => {
+        console.log(`http://localhost:${PORT}/`)
+    })  
+    .on('error', err => console.log(err))
+}
