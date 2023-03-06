@@ -1,5 +1,9 @@
 const {createTransport} = require('nodemailer')
-require('dotenv').config()
+const nodeMailer = require('nodemailer')
+const dotenv = require('dotenv')
+
+dotenv.config()
+
 const sendEmail = async () =>  {
     
     const MAIL = process.env.TEST_MAIL
@@ -8,12 +12,13 @@ const sendEmail = async () =>  {
     const transporter = createTransport({
         service: 'gmail',
         port: 587,
+        secure: true,
         auth: {
             user: MAIL,
             pass: PASSW
         }
     })
-
+    
     const mailOptions = {
         from: MAIL,
         to: 'rodriberdomas@gmail.com',

@@ -52,9 +52,8 @@ app.all('*', (req, res) => {
     })
 })
 
-sendEmail()
-sendSMS()
-sendWhatsapp()
+
+
     
 module.exports = app
 

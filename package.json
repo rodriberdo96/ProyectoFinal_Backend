@@ -20,17 +20,20 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "firebase-admin": "^11.3.0",
+    "googleapis": "^111.0.0",
     "log4js": "^6.7.1",
     "minimist": "^1.2.8",
     "moment": "^2.29.4",
     "mongo": "^0.1.0",
     "mongoose": "^6.9.1",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "twilio": "^4.7.2",
     "winston": "^3.8.2",
+    "xoauth2": "^1.2.0",
     "yargs": "^17.6.2"
   }
 }

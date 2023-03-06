@@ -1,7 +1,15 @@
-const containerProducts = require('../../dao/products/productDao')
-const newContainerProducts = new containerProducts()
+const containerProducts = require('../../services/productsServices')
+const newContainerProducts = containerProducts.getInstance()
+let instance = null
 
 class productsControllers {
+
+    static getInstance() {
+        if(!instance) {
+            instance = new productsControllers()
+        }
+        return instance
+    }
 
     async getAllProducts(req, res) {
         try {
@@ -54,4 +62,5 @@ class productsControllers {
 }
 
 
-module.exports = new productsControllers
+module.exports = productsControllers
+

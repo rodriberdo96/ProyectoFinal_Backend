@@ -1,6 +1,6 @@
 const passport = require('passport')
 const Strategy = require('passport-local').Strategy
-const {User} = require('.././models/users.js')
+const {User} = require('../models/users.js')
 const {isValidPassword} = require('../utils/bcrypt.js')
 const {createHash} = require('../utils/bcrypt.js')
 
