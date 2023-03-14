@@ -1,4 +1,4 @@
-const app = require('./app')
+const app = require('./index.js')
 const express = require('express')
 require('dotenv').config()
 const cluster = express('cluster') 
