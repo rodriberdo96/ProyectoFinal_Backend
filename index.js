@@ -19,6 +19,10 @@ const sendSMS = require('./src/utils/twilioSMS.js')
 const sendWhatsapp = require('./src/utils/twilioWsp.js')
 const { IpAddressContextImpl } = require('twilio/lib/rest/api/v2010/account/sip/ipAccessControlList/ipAddress.js')
 
+const { graphqlHTTP } = require('express-graphql') 
+const {schemaGraphQL} = require('./src/api/models/graphql')
+const graphQLRoot = require('./src/api/controllers/controllerGraphQL')
+
 app.set('view engine', 'ejs')
 app.set('views', './src/views')
 
@@ -43,6 +47,13 @@ app.use(passport.session())
 app.use('/auth', routesAuth)
 app.use('/products', routesProducts)
 app.use('/cart', routesCart)
+
+
+app.use('/graphql', graphqlHTTP({
+    schema: schemaGraphQL,
+    rootValue: graphQLRoot,
+    graphiql: true,
+}));
 
 
 app.all('*', (req, res) => {
